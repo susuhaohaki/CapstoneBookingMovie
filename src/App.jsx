@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
@@ -17,11 +16,11 @@ import EditMoviePage from "./pages/admin/EditMoviePage";
 import AdminTemplate from "./templates/AdminTemplate";
 import NotFoundPage from "./pages/client/NotFoundPage";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
-    <Provider store={store}>        
+    <Provider store={store}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomeTemplate />}>
