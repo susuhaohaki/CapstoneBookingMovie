@@ -1,5 +1,7 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 import HomePage from "./pages/client/HomePage";
 import MovieDetailPage from "./pages/client/MovieDetailPage";
 import BookTicketPage from "./pages/client/BookTicketPage";
@@ -13,42 +15,36 @@ import ShowtimePage from "./pages/admin/ShowtimePage";
 import AddMoviePage from "./pages/admin/AddMoviePage";
 import EditMoviePage from "./pages/admin/EditMoviePage";
 import AdminTemplate from "./templates/AdminTemplate";
+import NotFoundPage from "./pages/client/NotFoundPage";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomeTemplate />}>
-          <Route index element={<HomePage />} />
-          <Route path="home" element={<HomePage />} />
-          <Route path="detail" element={<MovieDetailPage />}>
-            <Route path=":id" element={<MovieDetailPage />} />
+    <Provider store={store}>        
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomeTemplate />}>
+            <Route index element={<HomePage />} />
+            <Route path="detail/:id" element={<MovieDetailPage />} />
+            <Route path="ticketroom/:id" element={<BookTicketPage />} />
           </Route>
-          <Route path="ticketroom" element={<BookTicketPage />}>
-            <Route path=":id" element={<BookTicketPage />} />
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="admin" element={<AdminTemplate />}>
+            <Route index element={<UserManagePage />} />
+            <Route path="users" element={<UserManagePage />} />
+            <Route path="films" element={<MovieManagePage />} />
+            <Route path="films/addnew" element={<AddMoviePage />} />
+            <Route path="films/edit/:id" element={<EditMoviePage />} />
+            <Route path="films/showtime/:id" element={<ShowtimePage />} />
           </Route>
-        </Route>
-        <Route path="register" element={<Register />} />
-        <Route path="login" element={<Login />} />
-        <Route path="profile" element={<Profile />} />
-
-        <Route path="admin" element={<AdminTemplate />}>
-          <Route index element={<UserManagePage />} />
-          <Route path="users" element={<UserManagePage />} />
-          <Route path="films" element={<MovieManagePage />}>
-            <Route path="addnew" element={<AddMoviePage />} />
-            <Route path="edit" element={<EditMoviePage />}>
-              <Route path=":id" element={<EditMoviePage />} />
-            </Route>
-            <Route path="showtime" element={<ShowtimePage />}>
-              <Route path=":id" element={<ShowtimePage />} />
-            </Route>
-          </Route>
-          <Route path="*" element={<Navigate to="/admin/films" />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+        <ToastContainer autoClose={1500} />
+      </BrowserRouter>
+    </Provider>
   );
 };
 
