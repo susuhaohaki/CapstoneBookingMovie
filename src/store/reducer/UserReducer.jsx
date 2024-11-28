@@ -1,19 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+const initialState = {};
 
-}
-
-const UserReducer = createSlice({
+const userReducer = createSlice({
   name: "userReducer",
   initialState,
   reducers: {
-    logoutAction:() => {
-        localStorage.removeItem('accessToken'); 
-    }
-  }
+    logoutAction: () => {
+      localStorage.removeItem("accessToken");
+    },
+  },
 });
 
-export const {logoutAction} = UserReducer.actions
+export const { logoutAction } = userReducer.actions;
 
-export default UserReducer.reducer
+export default userReducer.reducer;
