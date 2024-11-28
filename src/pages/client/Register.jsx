@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -6,6 +6,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 const Register = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
   const formik = useFormik({
     initialValues: {
       taiKhoan: "",
@@ -62,207 +66,191 @@ const Register = () => {
   });
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-50 via-white to-blue-100 px-4 py-12">
-      <NavLink
-        to="/"
-        className="absolute left-6 top-6 flex cursor-pointer items-center text-gray-600 transition duration-200 hover:text-gray-800" // Quay lại trang trước đó
-      >
-        <i className="fas fa-arrow-left mr-2 text-lg"></i>
-        <span className="text-sm font-medium">Back To Home</span>
-      </NavLink>
-      <div className="flex w-full max-w-4xl flex-col rounded-lg bg-white shadow-lg md:flex-row">
-        {/* Hình ảnh bên trái */}
-        <div className="hidden w-full lg:block lg:w-1/2">
-          <img
-            src="https://tintuc-divineshop.cdn.vccloud.vn/wp-content/uploads/2022/07/phase-4-vu-tru-mcu-qua-te-hai-thi-nguyen-nhan-la-do-avengers-endgame_62e1e0e9519a5.jpeg" // Thay bằng hình ảnh bạn muốn
-            alt="Register Image"
-            className="h-full w-full rounded-l-lg object-cover"
-          />
+
+<div className="flex min-h-screen items-center justify-center bg-gray-900 px-4 py-12">
+  <NavLink to="/" className="absolute top-6 left-6 flex items-center cursor-pointer text-orange-500 hover:text-orange-600 transition duration-200">
+    <i className="fas fa-arrow-left text-lg mr-2"></i>
+    <span className="text-sm font-medium">Back To Home</span>
+  </NavLink>
+  <div className="flex w-full container flex-col rounded-lg bg-gray-800 shadow-lg md:flex-row">
+    {/* Hình ảnh bên trái */}
+    <div className="hidden w-full lg:block lg:w-1/2">
+      <img
+        src="https://tintuc-divineshop.cdn.vccloud.vn/wp-content/uploads/2022/07/phase-4-vu-tru-mcu-qua-te-hai-thi-nguyen-nhan-la-do-avengers-endgame_62e1e0e9519a5.jpeg"
+        alt="Register Image"
+        className="h-full w-full rounded-l-lg object-cover"
+      />
+    </div>
+
+    {/* Form đăng ký bên phải */}
+    <div className="w-full px-4 py-6 md:px-6 md:py-8 lg:w-1/2">
+      <h2 className="mb-6 text-center text-xl font-bold text-orange-500 md:text-2xl">
+        Đăng Ký Tài Khoản
+      </h2>
+      <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
+        {/* Tài khoản */}
+        <div className="col-span-1">
+          <label htmlFor="taiKhoan" className="block text-sm font-medium text-gray-200">
+            Tài Khoản
+          </label>
+          <div className="relative mt-1">
+            <input
+              type="text"
+              id="taiKhoan"
+              name="taiKhoan"
+              className="w-full rounded-md border border-gray-600 p-3 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+              placeholder="Nhập tài khoản"
+              value={formik.values.taiKhoan}
+              onChange={formik.handleChange}
+            />
+            <i className="fas fa-user absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400"></i>
+            {formik.touched.taiKhoan && formik.errors.taiKhoan && (
+              <p className="absolute bottom--4 text-xs text-red-500">
+                {formik.errors.taiKhoan}
+              </p>
+            )}
+          </div>
         </div>
 
-        {/* Form đăng ký bên phải */}
-        <div className="w-full px-4 py-6 md:px-6 md:py-8 lg:w-1/2">
-          <h2 className="mb-6 text-center text-xl font-bold text-gray-800 md:text-2xl">
-            Đăng Ký Tài Khoản
-          </h2>
-          <form
-            onSubmit={formik.handleSubmit}
-            className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5"
+        {/* Mật khẩu */}
+        <div className="col-span-1">
+          <label htmlFor="matKhau" className="block text-sm font-medium text-gray-200">
+            Mật Khẩu
+          </label>
+          <div className="relative my-1">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="matKhau"
+              name="matKhau"
+              className="w-full rounded-md border border-gray-600 p-3 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+              placeholder="Nhập mật khẩu"
+              value={formik.values.matKhau}
+              onChange={formik.handleChange}
+            />
+            <i
+              onClick={togglePassword}
+              className={`fas fa-eye absolute right-3 top-1/2 -translate-y-1/2 transform cursor-pointer  ${
+                showPassword ? "text-orange-500" : "text-gray-400"
+              }`}
+            ></i>
+            {formik.touched.matKhau && formik.errors.matKhau && (
+              <div className="absolute bottom--4 text-red-500 text-xs">{formik.errors.matKhau}</div>
+            )}
+          </div>
+        </div>
+
+        {/* Email */}
+        <div className="col-span-1">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-200">
+            Email
+          </label>
+          <div className="relative mt-1">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="w-full rounded-md border border-gray-600 p-3 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+              placeholder="Nhập email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+            />
+            <i className="fas fa-envelope absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400"></i>
+            {formik.touched.email && formik.errors.email && (
+              <p className="absolute bottom--2 text-xs text-red-500">
+                {formik.errors.email}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Số điện thoại */}
+        <div className="col-span-1">
+          <label htmlFor="soDt" className="block text-sm font-medium text-gray-200">
+            Số Điện Thoại
+          </label>
+          <div className="relative mt-1">
+            <input
+              type="text"
+              id="soDt"
+              name="soDt"
+              className="w-full rounded-md border border-gray-600 p-3 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+              placeholder="Nhập số điện thoại"
+              value={formik.values.soDt}
+              onChange={formik.handleChange}
+            />
+            <i className="fas fa-phone-alt absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400"></i>
+            {formik.touched.soDt && formik.errors.soDt && (
+              <p className="absolute bottom--2 text-xs text-red-500">
+                {formik.errors.soDt}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Họ tên */}
+        <div className="col-span-1 lg:col-span-2">
+          <label htmlFor="hoTen" className="block text-sm font-medium text-gray-200">
+            Họ Tên
+          </label>
+          <div className="relative mt-1">
+            <input
+              type="text"
+              id="hoTen"
+              name="hoTen"
+              className="w-full rounded-md border border-gray-600 p-3 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+              placeholder="Nhập họ tên"
+              value={formik.values.hoTen}
+              onChange={formik.handleChange}
+            />
+            <i className="fas fa-user-tag absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400"></i>
+            {formik.touched.hoTen && formik.errors.hoTen && (
+              <p className="absolute bottom--2 text-xs text-red-500">
+                {formik.errors.hoTen}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Nút đăng ký */}
+        <div className="col-span-1 lg:col-span-2">
+          <button
+            type="submit"
+            className="w-full rounded-md bg-orange-500 px-4 py-3 text-sm font-medium text-white shadow-md transition duration-200 hover:bg-orange-600 md:text-base"
           >
-            {/* Tài khoản */}
-            <div className="col-span-1">
-              <label
-                htmlFor="taiKhoan"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Tài Khoản
-              </label>
-              <div className="relative mt-1">
-                <input
-                  type="text"
-                  id="taiKhoan"
-                  name="taiKhoan"
-                  className="w-full rounded-md border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="Nhập tài khoản"
-                  value={formik.values.taiKhoan}
-                  onChange={formik.handleChange}
-                />
-                <i className="fas fa-user absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400"></i>
-                {formik.touched.taiKhoan && formik.errors.taiKhoan && (
-                  <p className="absolute bottom--4 text-xs text-red-500">
-                    {formik.errors.taiKhoan}
-                  </p>
-                )}
-              </div>
-            </div>
+            Đăng Ký
+          </button>
+        </div>
+      </form>
 
-            {/* Mật khẩu */}
-            <div className="col-span-1">
-              <label
-                htmlFor="matKhau"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Mật Khẩu
-              </label>
-              <div className="relative mt-1">
-                <input
-                  type="password"
-                  id="matKhau"
-                  name="matKhau"
-                  className="w-full rounded-md border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="Nhập mật khẩu"
-                  value={formik.values.matKhau}
-                  onChange={formik.handleChange}
-                />
-                <i className="fas fa-lock absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400"></i>
-                {formik.touched.matKhau && formik.errors.matKhau && (
-                  <p className="absolute bottom--2 text-xs text-red-500">
-                    {formik.errors.matKhau}
-                  </p>
-                )}
-              </div>
-            </div>
+      {/* Đăng nhập */}
+      <p className="mt-4 text-center text-sm text-gray-200">
+        Đã có tài khoản?{" "}
+        <NavLink to="/login" className="text-orange-500 hover:underline">
+          Đăng nhập ngay
+        </NavLink>
+      </p>
 
-            {/* Email */}
-            <div className="col-span-1">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <div className="relative mt-1">
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="w-full rounded-md border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="Nhập email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                />
-                <i className="fas fa-envelope absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400"></i>
-                {formik.touched.email && formik.errors.email && (
-                  <p className="absolute bottom--2 text-xs text-red-500">
-                    {formik.errors.email}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Số điện thoại */}
-            <div className="col-span-1">
-              <label
-                htmlFor="soDt"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Số Điện Thoại
-              </label>
-              <div className="relative mt-1">
-                <input
-                  type="text"
-                  id="soDt"
-                  name="soDt"
-                  className="w-full rounded-md border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="Nhập số điện thoại"
-                  value={formik.values.soDt}
-                  onChange={formik.handleChange}
-                />
-                <i className="fas fa-phone-alt absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400"></i>
-                {formik.touched.soDt && formik.errors.soDt && (
-                  <p className="absolute bottom--2 text-xs text-red-500">
-                    {formik.errors.soDt}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Họ tên */}
-            <div className="col-span-1 lg:col-span-2">
-              <label
-                htmlFor="hoTen"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Họ Tên
-              </label>
-              <div className="relative mt-1">
-                <input
-                  type="text"
-                  id="hoTen"
-                  name="hoTen"
-                  className="w-full rounded-md border border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  placeholder="Nhập họ tên"
-                  value={formik.values.hoTen}
-                  onChange={formik.handleChange}
-                />
-                <i className="fas fa-user-tag absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400"></i>
-                {formik.touched.hoTen && formik.errors.hoTen && (
-                  <p className="absolute bottom--2 text-xs text-red-500">
-                    {formik.errors.hoTen}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Nút đăng ký */}
-            <div className="col-span-1 lg:col-span-2">
-              <button
-                type="submit"
-                className="w-full rounded-md bg-blue-500 px-4 py-3 text-sm font-medium text-white shadow-md transition duration-200 hover:bg-blue-600 md:text-base"
-              >
-                Đăng Ký
-              </button>
-            </div>
-          </form>
-
-          {/* Đăng nhập */}
-          <p className="mt-4 text-center text-sm text-gray-600">
-            Đã có tài khoản?{" "}
-            <NavLink to="/login" className="text-blue-500 hover:underline">
-              Đăng nhập ngay
-            </NavLink>
-          </p>
-
-          {/* Đăng ký bằng mạng xã hội */}
-          <div className="mt-6">
+      {/* Đăng ký bằng mạng xã hội */}
+      <div className="mt-6">
             <p className="text-center text-sm text-gray-500">
-              Hoặc đăng ký bằng
+              Hoặc đăng nhập bằng
             </p>
-            <div className="mt-4 flex justify-center space-x-4">
-              <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-blue-600 shadow-md transition duration-200 hover:bg-gray-200">
-                <i className="fab fa-google text-lg"></i>
+            <div className="mt-4 flex justify-center space-x-6">
+              <div className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-blue-600 shadow-md transition duration-200 hover:bg-gray-200">
+                <i className="fab fa-google text-xl"></i>
               </div>
-              <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-blue-800 shadow-md transition duration-200 hover:bg-gray-200">
-                <i className="fab fa-facebook-f text-lg"></i>
+              <div className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-blue-800 shadow-md transition duration-200 hover:bg-gray-200">
+                <i className="fab fa-facebook-f text-xl"></i>
               </div>
-              <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-blue-400 shadow-md transition duration-200 hover:bg-gray-200">
-                <i className="fab fa-twitter text-lg"></i>
+              <div className="cursor-pointer flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-blue-400 shadow-md transition duration-200 hover:bg-gray-200">
+                <i className="fab fa-twitter text-xl"></i>
               </div>
             </div>
           </div>
-        </div>
-      </div>
     </div>
+  </div>
+</div>
+
   );
 };
 
