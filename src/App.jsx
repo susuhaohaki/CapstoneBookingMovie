@@ -28,12 +28,13 @@ const App = () => {
             <Route path="detail/:id" element={<MovieDetailPage />} />
             <Route path="ticketroom/:id" element={<BookTicketPage />} />
             <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login />} />
+            <Route path="login" element={<Login />} />
           </Route>
-          
+
           <Route path="profile" element={<Profile />} />
           <Route path="admin" element={<AdminTemplate />}>
             <Route index element={<UserManagePage />} />
+            <Route path="dashboard" element={<UserManagePage />} />
             <Route path="users" element={<UserManagePage />} />
             <Route path="films" element={<MovieManagePage />} />
             <Route path="films/addnew" element={<AddMoviePage />} />
