@@ -27,9 +27,10 @@ const App = () => {
             <Route index element={<HomePage />} />
             <Route path="detail/:id" element={<MovieDetailPage />} />
             <Route path="ticketroom/:id" element={<BookTicketPage />} />
-          </Route>
-          <Route path="register" element={<Register />} />
+            <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
+          </Route>
+          
           <Route path="profile" element={<Profile />} />
           <Route path="admin" element={<AdminTemplate />}>
             <Route index element={<UserManagePage />} />

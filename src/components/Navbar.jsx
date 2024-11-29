@@ -18,19 +18,42 @@ const Navbar = () => {
             alt="Logo"
             className="h-12 w-12 object-contain"
           />
-          <p className="text-xl font-bold text-orange-500 md:hidden lg:inline-block">BOOKING TICKET</p>
+          <p className="text-xl font-bold text-orange-500 md:hidden lg:inline-block">
+            BOOKING TICKET
+          </p>
         </NavLink>
 
         {/* Navigation Links */}
         <div className="hidden space-x-6 md:flex">
-          <NavLink to="#" className="hover:text-orange-500">
-            Home
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? "font-bold text-orange-500 hover:text-orange-500"
+                : "hover:text-orange-500"
+            }
+          >
+            Trang chủ
           </NavLink>
-          <NavLink to="#" className="hover:text-orange-500">
-            Showing Movie
+          <NavLink
+            to="/movie"
+            className={({ isActive }) =>
+              isActive
+                ? "font-bold text-orange-500 hover:text-orange-500"
+                : "hover:text-orange-500"
+            }
+          >
+            Phim Đang Chiếu
           </NavLink>
-          <NavLink to="#" className="hover:text-orange-500">
-            Coming Movie
+          <NavLink
+            to="/upcoming"
+            className={({ isActive }) =>
+              isActive
+                ? "font-bold text-orange-500 hover:text-orange-500"
+                : "hover:text-orange-500"
+            }
+          >
+            Phim Sắp Chiếu
           </NavLink>
         </div>
 
@@ -40,13 +63,7 @@ const Navbar = () => {
             to="/login"
             className="rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
           >
-            Sign In
-          </NavLink>
-          <NavLink
-            to="/register"
-            className="rounded border border-orange-500 px-4 py-2 text-orange-500 hover:bg-orange-500 hover:text-white"
-          >
-            Sign Up
+            Đăng Nhập
           </NavLink>
         </div>
 
@@ -60,39 +77,47 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
+      {/* Mobile Menu */}
       {isOpen && (
-        <div className="bg-gray-800 lg:hidden">
+        <div className="bg-gray-800 text-gray-200 lg:hidden">
           <NavLink
             to="/"
-            className="block px-4 py-2 text-gray-200 hover:text-orange-500"
+            className={({ isActive }) =>
+              isActive
+                ? "block rounded bg-orange-600 px-4 py-2 font-semibold text-white shadow"
+                : "block px-4 py-2 text-gray-300 hover:text-orange-400"
+            }
           >
             Home
           </NavLink>
           <NavLink
             to="/movie"
-            className="block px-4 py-2 text-gray-200 hover:text-orange-500"
+            className={({ isActive }) =>
+              isActive
+                ? "block rounded bg-orange-600 px-4 py-2 font-semibold text-white shadow"
+                : "block px-4 py-2 text-gray-300 hover:text-orange-400"
+            }
           >
             Showing Movie
           </NavLink>
           <NavLink
             to="/comming"
-            className="block px-4 py-2 text-gray-200 hover:text-orange-500"
+            className={({ isActive }) =>
+              isActive
+                ? "block rounded bg-orange-600 px-4 py-2 font-semibold text-white shadow"
+                : "block px-4 py-2 text-gray-300 hover:text-orange-400"
+            }
           >
             Coming Movie
           </NavLink>
           <div className="flex flex-col space-y-2 px-4 py-2">
             <NavLink
               to="/login"
-              className="text-center rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
+              className="rounded bg-orange-500 px-4 py-2 text-center font-medium text-gray-900 hover:bg-orange-400 hover:text-white"
             >
-              Sign In
+              Đăng nhập
             </NavLink>
-            <NavLink
-              to="/register"
-              className="rounded border text-center border-orange-500 px-4 py-2 text-orange-500 hover:bg-orange-500 hover:text-white"
-            >
-              Sign Up
-            </NavLink>
+     
           </div>
         </div>
       )}
