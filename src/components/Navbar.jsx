@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
@@ -18,7 +18,9 @@ const Navbar = () => {
             alt="Logo"
             className="h-12 w-12 object-contain"
           />
-          <p className="text-xl font-bold text-orange-500 md:hidden lg:inline-block">BOOKING TICKET</p>
+          <p className="text-xl font-bold text-orange-500 md:hidden lg:inline-block">
+            BOOKING TICKET
+          </p>
         </NavLink>
 
         {/* Navigation Links */}
@@ -83,13 +85,13 @@ const Navbar = () => {
           <div className="flex flex-col space-y-2 px-4 py-2">
             <NavLink
               to="/login"
-              className="text-center rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
+              className="rounded bg-orange-500 px-4 py-2 text-center text-white hover:bg-orange-600"
             >
               Sign In
             </NavLink>
             <NavLink
               to="/register"
-              className="rounded border text-center border-orange-500 px-4 py-2 text-orange-500 hover:bg-orange-500 hover:text-white"
+              className="rounded border border-orange-500 px-4 py-2 text-center text-orange-500 hover:bg-orange-500 hover:text-white"
             >
               Sign Up
             </NavLink>
