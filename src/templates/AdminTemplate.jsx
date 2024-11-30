@@ -3,12 +3,17 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import { useState } from "react";
 const AdminTemplate = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const toggleMobile = () => {
     setIsMobile(!isMobile);
   };
+  const toggleSubmenu = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <>
-      <nav className="fixed z-30 w-full border-b border-gray-200 bg-gray-900 text-gray-200">
+      {/* NavBar */}
+      <nav className="fixed z-30 w-full border-b border-gray-700 bg-gray-800">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
@@ -16,10 +21,8 @@ const AdminTemplate = () => {
                 id="toggleSidebarMobile"
                 aria-expanded="true"
                 aria-controls="sidebar"
-                className="cursor-pointer rounded p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 lg:hidden"
-                onClick={() => {
-                  toggleMobile();
-                }}
+                className="cursor-pointer rounded p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:bg-gray-700 focus:ring-2 focus:ring-gray-700 lg:hidden"
+                onClick={toggleMobile}
               >
                 <svg
                   id="toggleSidebarMobileHamburger"
@@ -48,11 +51,10 @@ const AdminTemplate = () => {
                   />
                 </svg>
               </button>
-
               <Link to="/" className="group ml-2 flex md:mr-24">
                 <img
                   src={Logo}
-                  className="mr-3 h-12 w-12 group-hover:saturate-200"
+                  className="mr-3 h-10 group-hover:saturate-200"
                   alt="booking-ticket-logo"
                 />
                 <span className="self-center whitespace-nowrap text-xl font-semibold text-orange-500 group-hover:saturate-200 sm:text-2xl">
@@ -69,35 +71,79 @@ const AdminTemplate = () => {
                 </label>
                 <div className="relative mt-1 lg:w-96">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <i className="fa-solid fa-magnifying-glass text-gray-500"></i>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
+                      className="h-4 w-4 text-gray-400"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
                   </div>
                   <input
                     type="text"
                     name="search"
                     id="search"
-                    className="focus:ring-primary-500 focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-gray-900 sm:text-sm"
+                    className="block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 pl-10 text-white placeholder-gray-400 focus:border-blue-500 focus:outline focus:outline-0 focus:ring-blue-500 contrast-more:border-gray-400 contrast-more:placeholder-gray-500 sm:text-sm"
                     placeholder="Search"
                   />
                 </div>
               </form>
             </div>
-            <div className="flex items-center"></div>
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                className="flex rounded-full bg-orange-300 text-sm focus:ring-4 focus:ring-gray-600"
+                id="user-button"
+              >
+                <img
+                  className="h-8 w-8 rounded-full"
+                  src="https://robohash.org/avatar"
+                  alt="user photo"
+                />
+              </button>
+              <Link
+                to="/"
+                className="ml-3 flex items-center rounded-lg bg-gray-700 px-3 py-1.5 text-sm font-medium text-gray-300 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              >
+                <svg
+                  className="mr-2 h-4 w-4"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3"
+                  />
+                </svg>
+                Log out
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
-      <div className="flex overflow-hidden pt-[4.5626rem]">
+      <div className="flex overflow-hidden bg-gray-900 pt-16">
+        {/* Sidebar */}
         <aside
           id="sidebar"
           className={
             isMobile
-              ? "transition-width fixed left-0 top-0 z-20 h-full w-64 flex-shrink-0 flex-col pt-[4.5626rem] font-normal duration-75 lg:flex"
-              : "transition-width fixed left-0 top-0 z-20 hidden h-full w-64 flex-shrink-0 flex-col pt-[4.5626rem] font-normal duration-75 lg:flex"
+              ? "transition-width fixed left-0 top-0 z-20 flex h-full w-64 flex-shrink-0 flex-col pt-16 font-normal duration-75 lg:flex"
+              : "transition-width fixed left-0 top-0 z-20 hidden h-full w-64 flex-shrink-0 flex-col pt-16 font-normal duration-75 lg:flex"
           }
           aria-label="Sidebar"
         >
-          <div className="relative flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white pt-0">
+          <div className="relative flex min-h-0 flex-1 flex-col border-r border-gray-700 bg-gray-800 pt-0">
             <div className="flex flex-1 flex-col overflow-y-auto pb-4 pt-5">
-              <div className="flex-1 space-y-1 divide-y divide-gray-200 bg-white px-3">
+              <div className="flex-1 space-y-1 divide-y divide-gray-700 bg-gray-800 px-3">
                 <ul className="space-y-2 pb-2">
                   <li>
                     <form action="#" method="GET" className="lg:hidden">
@@ -112,19 +158,20 @@ const AdminTemplate = () => {
                           type="text"
                           name="mobile-search"
                           id="mobile-search"
-                          className="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-10 text-sm text-gray-900"
+                          className="block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 pl-10 text-sm text-gray-200 placeholder-gray-400 focus:border-blue-500 focus:outline focus:outline-0 focus:ring-blue-500 contrast-more:border-gray-400 contrast-more:placeholder-gray-500"
                           placeholder="Search"
                         />
                       </div>
                     </form>
                   </li>
+                  {/* Dashboard */}
                   <li>
                     <NavLink
                       to="./dashboard"
-                      className="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100"
+                      className="group flex items-center rounded-lg p-2 text-base text-gray-200 hover:bg-gray-700"
                     >
                       <svg
-                        className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                        className="h-6 w-6 text-gray-400 transition duration-75 group-hover:text-white"
                         fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 576 512"
@@ -137,10 +184,10 @@ const AdminTemplate = () => {
                   <li>
                     <NavLink
                       to="./users"
-                      className="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100"
+                      className="group flex items-center rounded-lg p-2 text-base text-gray-200 hover:bg-gray-700"
                     >
                       <svg
-                        className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                        className="h-6 w-6 text-gray-400 transition duration-75 group-hover:text-white"
                         fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 448 512"
@@ -151,16 +198,15 @@ const AdminTemplate = () => {
                       <span className="ml-3">Users</span>
                     </NavLink>
                   </li>
+                  {/* Films */}
                   <li>
-                    <NavLink
-                      to="./films"
-                      className="group flex w-full items-center rounded-lg p-2 text-base text-gray-900 transition duration-75 hover:bg-gray-100"
-                      aria-controls="dropdown-films"
-                      data-collapse-toggle="dropdown-films"
-                      aria-expanded="false"
+                    <button
+                      type="button"
+                      className="group flex w-full items-center rounded-lg p-2 text-base text-gray-200 transition duration-75 hover:bg-gray-700"
+                      onClick={toggleSubmenu}
                     >
                       <svg
-                        className="h-6 w-6 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                        className="h-6 w-6 flex-shrink-0 text-gray-400 transition duration-75 group-hover:text-white"
                         fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 512 512"
@@ -183,12 +229,15 @@ const AdminTemplate = () => {
                           clipRule="evenodd"
                         />
                       </svg>
-                    </NavLink>
-                    <ul id="dropdown-films" className="hidden space-y-2 py-2">
+                    </button>
+                    <ul
+                      id="dropdown-films"
+                      className={isOpen ? "space-y-2 p-2" : "hidden"}
+                    >
                       <li>
                         <NavLink
                           to="./films/"
-                          className="group flex items-center rounded-lg p-2 pl-11 text-base text-gray-900 transition duration-75 hover:bg-gray-100"
+                          className="group flex items-center rounded-lg p-2 pl-11 text-base text-gray-200 transition duration-75 hover:bg-gray-700"
                         >
                           Films
                         </NavLink>
@@ -196,7 +245,7 @@ const AdminTemplate = () => {
                       <li>
                         <NavLink
                           to="./films/addnew"
-                          className="group flex items-center rounded-lg p-2 pl-11 text-base text-gray-900 transition duration-75 hover:bg-gray-100"
+                          className="group flex items-center rounded-lg p-2 pl-11 text-base text-gray-200 transition duration-75 hover:bg-gray-700"
                         >
                           Add new
                         </NavLink>
@@ -206,10 +255,10 @@ const AdminTemplate = () => {
                   <li>
                     <NavLink
                       to="./showtime"
-                      className="group flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-100"
+                      className="group flex items-center rounded-lg p-2 text-base text-gray-200 hover:bg-gray-700"
                     >
                       <svg
-                        className="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                        className="h-6 w-6 text-gray-400 transition duration-75 group-hover:text-white"
                         fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 576 512"
@@ -222,25 +271,35 @@ const AdminTemplate = () => {
                 </ul>
               </div>
             </div>
-            <div className="absolute bottom-0 left-0 hidden w-full justify-center space-x-4 bg-white p-4 lg:flex"></div>
-          </div>
-          <div className="absolute bottom-0 left-0 hidden w-full justify-center space-x-4 p-4 lg:flex">
-            <Link
-              to="/"
-              className="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-            >
-              <svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 320 512"
+            {/* Back */}
+            <div className="absolute bottom-0 left-0 hidden w-full justify-center space-x-4 bg-gray-800 p-4 lg:flex">
+              <Link
+                to="/"
+                className="inline-flex cursor-pointer justify-center rounded p-2 text-gray-500 hover:bg-gray-700 hover:text-white"
               >
-                <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z" />
-              </svg>
-            </Link>
+                <svg
+                  className="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 320 512"
+                  fill="currentColor"
+                >
+                  <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z" />
+                </svg>
+              </Link>
+            </div>
           </div>
         </aside>
-        <div className="relative h-full w-full overflow-y-auto lg:ml-64">
-          <Outlet />
+        {/* Sidebar Content */}
+        <div className="relative h-full w-full overflow-y-auto bg-gray-900 lg:ml-64">
+          <main>
+            <div className="px-4 pt-6">
+              <div className="grid h-screen">
+                <div className="rounded-lg border border-gray-700 bg-gray-800 p-4 shadow-sm sm:p-6">
+                  <Outlet />
+                </div>
+              </div>
+            </div>
+          </main>
         </div>
       </div>
     </>
