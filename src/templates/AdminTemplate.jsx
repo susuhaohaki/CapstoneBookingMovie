@@ -293,10 +293,8 @@ const AdminTemplate = () => {
         <div className="relative h-full w-full overflow-y-auto bg-gray-900 lg:ml-64">
           <main>
             <div className="px-4 pt-6">
-              <div className="grid min-h-svh">
-                <div className="rounded-lg border border-gray-700 bg-gray-800 p-4 shadow-sm sm:p-6">
-                  <Outlet />
-                </div>
+              <div className="rounded-lg border border-gray-700 bg-gray-800 p-4 shadow-sm sm:p-6">
+                <Outlet />
               </div>
             </div>
           </main>
