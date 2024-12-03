@@ -7,7 +7,7 @@ const HomeTemplate = () => {
     <>
       <Navbar />
       <Outlet />
-      <Footer/>
+      <Footer />
     </>
   );
 };
