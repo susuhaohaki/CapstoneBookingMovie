@@ -20,7 +20,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
-    <Provider store={store}>
+    <div className="bg-gray-900">
+      <Provider store={store}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomeTemplate />}>
@@ -46,6 +47,7 @@ const App = () => {
         <ToastContainer autoClose={1500} />
       </BrowserRouter>
     </Provider>
+    </div>
   );
 };
 
