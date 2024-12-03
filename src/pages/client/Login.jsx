@@ -44,7 +44,7 @@ const Login = () => {
     },
   });
   return (
-    <div className="flex max-h-screen items-start justify-center bg-gray-900 px-4 py-12">
+    <div className="flex h-full items-start justify-center bg-gray-900 px-4 py-12">
       <div className="container flex w-full flex-col rounded-lg bg-gray-800 shadow-lg md:flex-row">
         {/* Hình ảnh bên trái */}
         <div className="hidden w-full lg:block lg:w-1/2">
