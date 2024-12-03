@@ -44,12 +44,12 @@ const Login = () => {
     },
   });
   return (
-    <div className="flex min-h-screen justify-center bg-gray-900 px-4 pt-5">
-      <div className="flex w-full max-w-7xl flex-col rounded-lg bg-gray-800 shadow-lg lg:flex-row">
+    <div className="flex max-h-screen items-start justify-center bg-gray-900 px-4 py-12">
+      <div className="container flex w-full flex-col rounded-lg bg-gray-800 shadow-lg md:flex-row">
         {/* Hình ảnh bên trái */}
         <div className="hidden w-full lg:block lg:w-1/2">
           <img
-            src="https://tintuc-divineshop.cdn.vccloud.vn/wp-content/uploads/2022/07/phase-4-vu-tru-mcu-qua-te-hai-thi-nguyen-nhan-la-do-avengers-endgame_62e1e0e9519a5.jpeg" // Thay bằng hình ảnh bạn muốn
+            src="https://tintuc-divineshop.cdn.vccloud.vn/wp-content/uploads/2022/07/phase-4-vu-tru-mcu-qua-te-hai-thi-nguyen-nhan-la-do-avengers-endgame_62e1e0e9519a5.jpeg" 
             alt="Login Image"
             className="h-full w-full rounded-l-lg object-cover"
           />

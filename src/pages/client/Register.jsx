@@ -61,19 +61,12 @@ const Register = () => {
       } catch (error) {
         console.error("Lỗi đăng ký:", error);
         toast.error(error.response.data.content);
-      }
+      }s
     },
   });
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 px-4 py-12">
-      <NavLink
-        to="/"
-        className="absolute left-6 top-6 flex cursor-pointer items-center text-orange-500 transition duration-200 hover:text-orange-600"
-      >
-        <i className="fas fa-arrow-left mr-2 text-lg"></i>
-        <span className="text-sm font-medium">Back To Home</span>
-      </NavLink>
+    <div className="flex max-h-screen items-start justify-center bg-gray-900 px-4 py-12">
       <div className="container flex w-full flex-col rounded-lg bg-gray-800 shadow-lg md:flex-row">
         {/* Hình ảnh bên trái */}
         <div className="hidden w-full lg:block lg:w-1/2">
@@ -252,20 +245,22 @@ const Register = () => {
             </NavLink>
           </p>
 
-          {/* Đăng ký bằng mạng xã hội */}
           <div className="mt-6">
             <p className="text-center text-sm text-gray-500">
               Hoặc đăng nhập bằng
             </p>
             <div className="mt-4 flex justify-center space-x-6">
-              <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-blue-600 shadow-md transition duration-200 hover:bg-gray-200">
-                <i className="fab fa-google text-xl"></i>
+              {/* Google */}
+              <div className="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-blue-600 shadow-md transition duration-300 hover:bg-blue-600 hover:text-white hover:shadow-lg">
+                <i className="fab fa-google transform text-xl transition-transform duration-300 group-hover:scale-110"></i>
               </div>
-              <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-blue-800 shadow-md transition duration-200 hover:bg-gray-200">
-                <i className="fab fa-facebook-f text-xl"></i>
+              {/* Facebook */}
+              <div className="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-blue-800 shadow-md transition duration-300 hover:bg-blue-800 hover:text-white hover:shadow-lg">
+                <i className="fab fa-facebook-f transform text-xl transition-transform duration-300 group-hover:scale-110"></i>
               </div>
-              <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-blue-400 shadow-md transition duration-200 hover:bg-gray-200">
-                <i className="fab fa-twitter text-xl"></i>
+              {/* Twitter */}
+              <div className="group flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-100 text-blue-400 shadow-md transition duration-300 hover:bg-blue-400 hover:text-white hover:shadow-lg">
+                <i className="fab fa-twitter transform text-xl transition-transform duration-300 group-hover:scale-110"></i>
               </div>
             </div>
           </div>
