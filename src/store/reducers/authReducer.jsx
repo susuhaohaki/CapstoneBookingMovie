@@ -50,7 +50,7 @@ const loginUser = createAsyncThunk(
           },
         },
       );
-      // localStorage.setItem("userToken", response.data.content.accessToken);
+      localStorage.setItem("accessToken", response.data.content.accessToken);
       return response.data;
     } catch (error) {
       if (error.response && error.response.data) {
@@ -61,10 +61,15 @@ const loginUser = createAsyncThunk(
     }
   },
 );
+
+const userToken = localStorage.getItem("accessToken")
+  ? localStorage.getItem("accessToken")
+  : null;
+
 const initialState = {
   isLoading: false,
   user: null,
-  token: null,
+  token: userToken,
   error: null,
   isSuccess: false,
 };
@@ -73,12 +78,12 @@ const authReducer = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state.user = null;
-      state.token = null;
+      // state.user = null;
+      // state.token = null;
+      console.log(state);
     },
     setCredentials: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      state.user = action.payload.content;
     },
   },
   extraReducers: (builder) => {

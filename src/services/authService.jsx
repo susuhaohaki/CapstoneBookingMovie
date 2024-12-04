@@ -8,7 +8,7 @@ const authApi = createApi({
       const userToken = getState().authReducer.token;
       if (userToken) {
         headers.set("TokenCybersoft", import.meta.env.VITE_TOKEN_CYBERSOFT);
-        headers.set("Authorization", userToken);
+        headers.set("Authorization", "Bearer " + userToken);
         return headers;
       }
     },
