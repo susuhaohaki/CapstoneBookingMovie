@@ -69,33 +69,28 @@ const Navbar = () => {
         {/* Sign In/Sign Up */}
 
         <div className="hidden md:flex md:items-center md:gap-5">
-          <span className="text-lg text-orange-500">
-            {isFetching
-              ? `Fetching your profile...`
-              : user !== null
-                ? `Logged in as ${user?.taiKhoan}`
-                : "You're not logged in"}
-          </span>
-          <NavLink
-            to="/register"
-            className={
-              user !== null
-                ? "hidden"
-                : "rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
-            }
-          >
-            Đăng Ký
-          </NavLink>
-          <NavLink
-            to="/login"
-            className={
-              user !== null
-                ? "hidden"
-                : "rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
-            }
-          >
-            Đăng Nhập
-          </NavLink>
+          {isFetching ? (
+            <span className="text-lg text-gray-400">Loading...</span>
+          ) : user ? (
+            <span className="text-lg text-orange-500">
+              Xin chào, {user?.taiKhoan}
+            </span>
+          ) : (
+            <>
+              <NavLink
+                to="/register"
+                className="rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
+              >
+                Đăng Ký
+              </NavLink>
+              <NavLink
+                to="/login"
+                className="rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
+              >
+                Đăng Nhập
+              </NavLink>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
