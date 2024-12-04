@@ -11,11 +11,14 @@ const DetailMovie = () => {
     (state) => state.detailMovieReducer,
   );
   const [movieId,setMovieId] = useState("");
+  const [iframeSrc, setIframeSrc] = useState(`https://www.youtube.com/embed/${movieId}`);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
+    setIframeSrc(`https://www.youtube.com/embed/${movieId}`)
     setIsModalOpen(true);
   };
   const handleCancel = () => {
+    setIframeSrc("")
     setIsModalOpen(false);
   };
   useEffect(() => {
@@ -118,7 +121,7 @@ const DetailMovie = () => {
             </div>
             {/* Modal Body (Iframe Video) */}
             <div className="lg:h-128 xl:h-160 relative h-64 w-full sm:h-80 md:h-96">
-              <iframe className="h-full w-full" src={`https://www.youtube.com/embed/${movieId}`} allowFullScreen />
+              <iframe className="h-full w-full" src={iframeSrc} allowFullScreen  />
             </div>
           </div>
         </div>

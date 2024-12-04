@@ -13,4 +13,22 @@
     width: 0px; /* Ẩn thanh cuộn dọc */
     height: 0px; /* Ẩn thanh cuộn ngang */
 }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px; /* Độ rộng của thanh cuộn */
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a; /* Màu nền của track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555; /* Màu thanh cuộn */
+  border-radius: 8px; /* Bo góc thanh cuộn */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff7f50; /* Màu thanh cuộn khi hover */
+}
+
 }

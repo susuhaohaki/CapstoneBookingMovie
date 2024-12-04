@@ -7,7 +7,7 @@ export const getDetailMovieAPI = (maPhim) => {
     dispatch(setLoading(true)); // Bắt đầu loading
     try {
       const result = await axios.get(
-        `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyPhim/LayThongTinPhim?MaPhim=${maPhim}`,
+        `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${maPhim}`,
         {
           headers: {
             TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
@@ -15,11 +15,11 @@ export const getDetailMovieAPI = (maPhim) => {
         },
       );
       dispatch(setMovieDetail(result.data.content));
-      dispatch(setLoading(false)); // Kết thúc loading khi thành công
+      dispatch(setMovieLoading(false)); // Kết thúc loading khi thành công
     } catch (error) {
       console.log("🚀 ~ return ~ error:", error);
-      dispatch(setError(true)); 
-      dispatch(setLoading(false)); // Kết thúc loading khi có lỗi
+      dispatch(setMovieError(true)); 
+      dispatch(setMovieLoading(false)); // Kết thúc loading khi có lỗi
     }
   };
 };
@@ -36,17 +36,15 @@ const detailMovieReducer = createSlice({
   reducers: {
     setMovieDetail: (state, action) => {
       state.movieDetail = action.payload;
-      state.error = false; // Reset lỗi khi có dữ liệu phim mới
+      state.error = false; 
     },
-    setError: (state, action) => {
-      state.error = action.payload; // Cập nhật trạng thái lỗi
+    setMovieError: (state, action) => { 
+      state.error = action.payload;
     },
-    setLoading: (state, action) => {
-      state.loading = action.payload; // Cập nhật trạng thái loading
+    setMovieLoading: (state, action) => { 
+      state.loading = action.payload;
     },
   },
 });
-
-export const { setMovieDetail, setError, setLoading } = detailMovieReducer.actions;
-
+export const { setMovieDetail, setMovieError, setMovieLoading } = detailMovieReducer.actions;
 export default detailMovieReducer.reducer;
