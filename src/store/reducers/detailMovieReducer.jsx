@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { setHeThongRap } from './quanLyRapReducer';
 
 // ----- action thunk -----
 export const getDetailMovieAPI = (maPhim) => {
@@ -26,6 +27,7 @@ export const getDetailMovieAPI = (maPhim) => {
 const initialState = {
   movieDetail: {},
   error: false,  // Trạng thái lỗi
+  heThongRap: {},
 };
 
 const detailMovieReducer = createSlice({
@@ -42,7 +44,10 @@ const detailMovieReducer = createSlice({
     setMovieLoading: (state, action) => { 
       state.loading = action.payload;
     },
+    setHeThongRapDetailPhim : (state, action) => {
+      state.heThongRap = action.payload;
+    },
   },
 });
-export const { setMovieDetail, setMovieError, setMovieLoading } = detailMovieReducer.actions;
+export const { setMovieDetail, setMovieError, setMovieLoading,setHeThongRapDetailPhim } = detailMovieReducer.actions;
 export default detailMovieReducer.reducer;

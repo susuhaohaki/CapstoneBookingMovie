@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getDetailMovieAPI } from "../store/reducers/detailMovieReducer";
+import {
+  getDetailMovieAPI,
+  setHeThongRapDetailPhim,
+} from "../store/reducers/detailMovieReducer";
 import { useDispatch, useSelector } from "react-redux";
-
 const DetailMovie = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { movieDetail, error } = useSelector(
+  const { movieDetail, error, heThongRap } = useSelector(
     (state) => state.detailMovieReducer,
   );
-  const [movieId,setMovieId] = useState("");
-  const [iframeSrc, setIframeSrc] = useState(`https://www.youtube.com/embed/${movieId}`);
+  const [movieId, setMovieId] = useState("");
+  const [iframeSrc, setIframeSrc] = useState(
+    `https://www.youtube.com/embed/${movieId}`,
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
-    setIframeSrc(`https://www.youtube.com/embed/${movieId}`)
+    setIframeSrc(`https://www.youtube.com/embed/${movieId}`);
     setIsModalOpen(true);
   };
   const handleCancel = () => {
-    setIframeSrc("")
+    setIframeSrc("");
     setIsModalOpen(false);
   };
   useEffect(() => {
@@ -25,14 +29,20 @@ const DetailMovie = () => {
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (movieDetail.trailer) {
-        const movieID = movieDetail.trailer.split("v=")[1];
-        setMovieId(movieID);
+    if (Object.keys(movieDetail).length > 0) {
+      const { heThongRapChieu } = movieDetail;
+      const heThongRap = heThongRapChieu[0];
+      dispatch(setHeThongRapDetailPhim(heThongRap));
     }
   }, [movieDetail]);
-  
 
-  // Nếu có lỗi, hiển thị thông báo lỗi
+  useEffect(() => {
+    if (movieDetail.trailer) {
+      const movieID = movieDetail.trailer.split("v=")[1];
+      setMovieId(movieID);
+    }
+  }, [movieDetail]);
+
   if (error) {
     return (
       <div className="container mx-auto p-4">
@@ -43,7 +53,6 @@ const DetailMovie = () => {
     );
   }
 
-  // Nếu không có lỗi và dữ liệu phim đã được tải, hiển thị chi tiết phim
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col items-center space-y-6 md:flex-row md:items-start md:space-x-8 md:space-y-0">
@@ -57,7 +66,7 @@ const DetailMovie = () => {
         </div>
 
         {/* Chi tiết phim */}
-        <div className="flex-1 space-y-6 lg:max-w-[400px]">
+        <div className="flex-1 space-y-6">
           <h1 className="border-b-2 border-red-500 pb-3 text-4xl font-bold text-orange-500">
             {movieDetail.tenPhim}
           </h1>
@@ -84,15 +93,101 @@ const DetailMovie = () => {
                 : "Đã chiếu"}
           </p>
           <div className="flex gap-6">
-            <div className="rounded-lg bg-blue-600 px-6 py-3 text-white shadow transition hover:bg-blue-700 cursor-pointer" onClick={()=>showModal()}>
+            <div
+              className="cursor-pointer rounded-lg bg-blue-600 px-6 py-3 text-white shadow transition hover:bg-blue-700"
+              onClick={() => showModal()}
+            >
               Xem Trailer
             </div>
-            <button
-              onClick={() => alert("Đặt vé thành công!")}
-              className="rounded-lg bg-green-600 px-6 py-3 text-white shadow transition hover:bg-green-700"
-            >
-              Đặt Vé
-            </button>
+          </div>
+          <div className="grid grid-cols-1 items-center gap-4 lg:grid-cols-12">
+            {/* Kiểm tra nếu không có heThongRap hoặc cumRapChieu rỗng */}
+            {heThongRap &&
+            heThongRap.cumRapChieu &&
+            heThongRap.cumRapChieu.length > 0 ? (
+              <>
+                {/* Logo hệ thống rạp */}
+                <div className="col-span-1 hidden lg:col-span-1 lg:block">
+                  <img
+                    src={heThongRap.logo}
+                    alt="Logo hệ thống rạp"
+                    className="hidden w-full lg:block"
+                  />
+                </div>
+
+                {/* Thông tin cụm rạp */}
+                <div className="col-span-1 mx-auto lg:col-span-5">
+                  {heThongRap.cumRapChieu.map((cumRap, index) => (
+                    <div
+                      key={index}
+                      className="mb-4 flex items-center space-x-2"
+                    >
+                      <img
+                        src={cumRap.hinhAnh}
+                        alt={`Logo cụm rạp ${cumRap.tenCumRap}`}
+                        className="w-16 rounded-lg"
+                      />
+                      <div>
+                        <h2 className="text-2xl font-bold text-orange-500">
+                          {cumRap.tenCumRap}
+                        </h2>
+                        <p className="mt-2 text-sm text-gray-400">
+                          {cumRap.diaChi}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Thông tin lịch chiếu phim */}
+                <div className="col-span-1 lg:col-span-6">
+                  {heThongRap.cumRapChieu.map((cumRap) =>
+                    cumRap.lichChieuPhim.map((lichChieu) => (
+                      <div
+                        key={lichChieu.maLichChieu}
+                        className="mb-4 flex flex-col items-start space-x-0 sm:flex-row sm:items-center sm:space-x-4"
+                      >
+                        {/* Thông tin lịch chiếu */}
+                        <div className="w-full sm:w-full">
+                          <h3 className="text-xl font-semibold text-orange-500">
+                            {lichChieu.tenPhim}
+                          </h3>
+                          <div className="mt-2 flex flex-col justify-between gap-2 text-sm text-gray-400 sm:flex-row">
+                            <span>
+                              Thời gian:{" "}
+                              {new Date(
+                                lichChieu.ngayChieuGioChieu,
+                              ).toLocaleDateString()}
+                            </span>
+
+                            <span>
+                              Giá vé: {lichChieu.giaVe.toLocaleString()} VND
+                            </span>
+                            <span>Thời lượng: {lichChieu.thoiLuong} phút</span>
+                          </div>
+                          <a
+                            href={`/ticketroom/${lichChieu.maLichChieu}`}
+                            className="mt-2 inline-block h-[36px] w-full rounded-lg bg-gray-700 px-4 py-2 text-sm font-semibold text-white transition duration-300 ease-in-out hover:bg-orange-500 hover:text-white focus:outline-none sm:w-auto"
+                  
+                          >
+                            {new Date(
+                              lichChieu.ngayChieuGioChieu,
+                            ).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </a>
+                        </div>
+                      </div>
+                    )),
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="col-span-1 text-center text-lg text-gray-500 lg:col-span-12">
+                Không có dữ liệu hệ thống rạp.
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -106,13 +201,20 @@ const DetailMovie = () => {
             {/* Modal Header */}
             <div className="flex items-center justify-between bg-gray-800 p-4 text-white">
               <h2 className="text-xl font-bold">Trailer</h2>
-              <button className="text-white cursor-pointer" onClick={()=>handleCancel()}>
+              <button
+                className="cursor-pointer text-white"
+                onClick={() => handleCancel()}
+              >
                 <i className="fas fa-times" />
               </button>
             </div>
             {/* Modal Body (Iframe Video) */}
             <div className="lg:h-128 xl:h-160 relative h-64 w-full sm:h-80 md:h-96">
-              <iframe className="h-full w-full" src={iframeSrc} allowFullScreen  />
+              <iframe
+                className="h-full w-full"
+                src={iframeSrc}
+                allowFullScreen
+              />
             </div>
           </div>
         </div>
