@@ -1,13 +1,25 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useGetProfileQuery } from "../services/authService";
+import { useEffect } from "react";
+import { logout, setCredentials } from "../store/reducers/authReducer";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { user } = useSelector((state) => state.authReducer);
+  const dispatch = useDispatch();
+  const { data, isFetching } = useGetProfileQuery({
+    pollingInterval: 900000,
+  });
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+  useEffect(() => {
+    if (data) {
+      dispatch(setCredentials(data));
+    }
+  }, [data, dispatch]);
   return (
     <nav className="bg-gray-900 text-gray-200 shadow">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -58,7 +70,13 @@ const Navbar = () => {
         </div>
 
         {/* Sign In/Sign Up */}
-        <div className="hidden space-x-4 md:flex">
+        <div className="hidden md:flex md:items-center md:gap-5">
+          <NavLink
+            to="/register"
+            className="rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
+          >
+            Đăng Ký
+          </NavLink>
           <NavLink
             to="/login"
             className="rounded bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
@@ -121,7 +139,7 @@ const Navbar = () => {
               to="/register"
               className="rounded border border-orange-500 px-4 py-2 text-center text-orange-500 hover:bg-orange-500 hover:text-white"
             >
-              Sign Up
+              Đăng ký
             </NavLink>
           </div>
         </div>

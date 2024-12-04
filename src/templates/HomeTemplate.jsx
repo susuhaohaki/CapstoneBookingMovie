@@ -1,12 +1,14 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 const HomeTemplate = () => {
   return (
     <>
-      <Navbar />
-      <Outlet />
+      <Header />
+      <main>
+        <Outlet />
+      </main>
       <Footer />
     </>
   );

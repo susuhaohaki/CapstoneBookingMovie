@@ -4,11 +4,11 @@ import MovieTabs from "../../components/MovieTabs";
 
 const HomePage = () => {
   return (
-    <div >
+    <>
       <Banner />
-      <MovieTabs/>
-      <HeThongRapInfo/>
-    </div>
+      <MovieTabs />
+      <HeThongRapInfo />
+    </>
   );
 };
 

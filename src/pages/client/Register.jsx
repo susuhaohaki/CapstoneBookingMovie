@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../store/reducers/authReducer";
 const Register = () => {
+  const { isLoading, user, error, isSuccess } = useSelector(
+    (state) => state.authReducer,
+  );
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => {
@@ -43,28 +48,37 @@ const Register = () => {
         .min(8, "Họ tên phải có ít nhất 8 ký tự"),
     }),
     onSubmit: async (values) => {
-      try {
-        const res = await axios.post(
-          `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyNguoiDung/DangKy`,
-          values,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
-            },
-          },
-        );
-        if (res.status === 200) {
-          toast.success("Đăng ký thành công!");
-          navigate("/login");
-        }
-      } catch (error) {
-        console.error("Lỗi đăng ký:", error);
-        toast.error(error.response.data.content);
-      }s
+      // try {
+      //   const res = await axios.post(
+      //     `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyNguoiDung/DangKy`,
+      //     values,
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
+      //       },
+      //     },
+      //   );
+      //   if (res.status === 200) {
+      //     toast.success("Đăng ký thành công!");
+      //     navigate("/login");
+      //   }
+      // } catch (error) {
+      //   console.error("Lỗi đăng ký:", error);
+      //   toast.error(error.response.data.content);
+      // }
+      console.log(values);
+      dispatch(registerUser(values));
     },
   });
-
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Đăng ký thành công!");
+      navigate("/login");
+    }
+    if (user) navigate("/profile");
+    if (error) toast.error(error);
+  }, [navigate, isSuccess, user, error]);
   return (
     <div className="flex h-full items-start justify-center bg-gray-900 px-4 py-12">
       <div className="container flex w-full flex-col rounded-lg bg-gray-800 shadow-lg md:flex-row">
@@ -231,8 +245,9 @@ const Register = () => {
               <button
                 type="submit"
                 className="w-full rounded-md bg-orange-500 px-4 py-3 text-sm font-medium text-white shadow-md transition duration-200 hover:bg-orange-600 md:text-base"
+                disabled={isLoading}
               >
-                Đăng Ký
+                {isLoading ? "Đăng ký..." : "Đăng ký"}
               </button>
             </div>
           </form>

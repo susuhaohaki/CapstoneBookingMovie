@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { toast } from "react-toastify";
-
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../store/reducers/authReducer";
 const Login = () => {
+  const { isLoading, user, error } = useSelector((state) => state.authReducer);
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
@@ -18,38 +19,49 @@ const Login = () => {
       matKhau: "",
     },
     validationSchema: Yup.object({
-      taiKhoan: Yup.string().required("Vui lòng nhập tài khoản"),
-      matKhau: Yup.string().required("Vui lòng nhập mật khẩu"),
+      taiKhoan: Yup.string().required("Vui lòng nhập tài khoản"),
+      matKhau: Yup.string().required("Vui lòng nhập mật khẩu"),
     }),
     onSubmit: async (values) => {
-      try {
-        const response = await axios.post(
-          `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyNguoiDung/DangNhap`,
-          values, // Đảm bảo dữ liệu truyền đi đúng
-          {
-            headers: {
-              "Content-Type": "application/json",
-              TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
-            },
-          },
-        );
-        toast.success("Đăng nhập thành công!");
-        navigate("/");
-        const accessToken = response.data.content.accessToken;
-        localStorage.setItem("accessToken", accessToken); // Lưu token vào localStorage
-      } catch (error) {
-        console.error("Lỗi đăng nhập:", error);
-        toast.error(error.response.data.content);
-      }
+      // try {
+      //   const response = await axios.post(
+      //     `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyNguoiDung/DangNhap`,
+      //     values, // Đảm bảo dữ liệu truyền đi đúng
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
+      //       },
+      //     },
+      //   );
+      //   toast.success("Đăng nhập thành công!");
+      //   navigate("/");
+      //   const accessToken = response.data.content.accessToken;
+      //   localStorage.setItem("accessToken", accessToken); // Lưu token vào localStorage
+      // } catch (error) {
+      //   console.error("Lỗi đăng nhập:", error);
+      //   toast.error(error.response.data.content);
+      // }
+      dispatch(loginUser(values));
     },
   });
+
+  useEffect(() => {
+    if (user) {
+      toast.success("Đăng nhập thành công!");
+      navigate("/");
+    }
+    if (error) {
+      toast.error(error);
+    }
+  }, [navigate, user, error]);
   return (
     <div className="flex h-full items-start justify-center bg-gray-900 px-4 py-12">
       <div className="container flex w-full flex-col rounded-lg bg-gray-800 shadow-lg md:flex-row">
         {/* Hình ảnh bên trái */}
         <div className="hidden w-full lg:block lg:w-1/2">
           <img
-            src="https://tintuc-divineshop.cdn.vccloud.vn/wp-content/uploads/2022/07/phase-4-vu-tru-mcu-qua-te-hai-thi-nguyen-nhan-la-do-avengers-endgame_62e1e0e9519a5.jpeg" 
+            src="https://tintuc-divineshop.cdn.vccloud.vn/wp-content/uploads/2022/07/phase-4-vu-tru-mcu-qua-te-hai-thi-nguyen-nhan-la-do-avengers-endgame_62e1e0e9519a5.jpeg"
             alt="Login Image"
             className="h-full w-full rounded-l-lg object-cover"
           />
@@ -74,14 +86,14 @@ const Login = () => {
                   type="text"
                   id="taiKhoan"
                   name="taiKhoan"
-                  className="w-full rounded-md border border-gray-600 p-3 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  className={`${formik.touched.taiKhoan && formik.errors.taiKhoan && "ring-1 ring-red-500"} w-full rounded-md border border-gray-600 p-3 shadow-sm focus:outline-none focus:ring-1 focus:ring-orange-500`}
                   placeholder="Nhập tài khoản"
                   value={formik.values.taiKhoan}
                   onChange={formik.handleChange}
                 />
                 <i className="fas fa-user absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400"></i>
                 {formik.touched.taiKhoan && formik.errors.taiKhoan && (
-                  <div className="absolute bottom--4 text-xs text-red-500">
+                  <div className="absolute -bottom-4 left-3 text-xs text-red-500">
                     {formik.errors.taiKhoan}
                   </div>
                 )}
@@ -101,7 +113,7 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   id="matKhau"
                   name="matKhau"
-                  className="w-full rounded-md border border-gray-600 p-3 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  className={`${formik.touched.matKhau && formik.errors.matKhau && "ring-1 ring-red-500"} w-full rounded-md border border-gray-600 p-3 shadow-sm focus:outline-none focus:ring-1 focus:ring-orange-500`}
                   placeholder="Nhập mật khẩu"
                   value={formik.values.matKhau}
                   onChange={formik.handleChange}
@@ -113,7 +125,7 @@ const Login = () => {
                   }`}
                 ></i>
                 {formik.touched.matKhau && formik.errors.matKhau && (
-                  <div className="absolute bottom--4 text-xs text-red-500">
+                  <div className="absolute -bottom-4 left-3 text-xs text-red-500">
                     {formik.errors.matKhau}
                   </div>
                 )}
@@ -125,8 +137,9 @@ const Login = () => {
               <button
                 type="submit"
                 className="w-full rounded-md bg-orange-500 px-4 py-3 text-white shadow-md transition duration-200 hover:bg-orange-600"
+                disabled={isLoading}
               >
-                Đăng Nhập
+                {isLoading ? "Đang đăng nhập..." : "Đăng Nhập"}
               </button>
             </div>
           </form>

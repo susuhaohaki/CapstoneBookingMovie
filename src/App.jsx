@@ -22,31 +22,31 @@ const App = () => {
   return (
     <div className="bg-gray-900">
       <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomeTemplate />}>
-            <Route index element={<HomePage />} />
-            <Route path="detail/:id" element={<MovieDetailPage />} />
-            <Route path="ticketroom/:id" element={<BookTicketPage />} />
-            <Route path="register" element={<Register />} />
-            <Route path="login" element={<Login />} />
-          </Route>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomeTemplate />}>
+              <Route index element={<HomePage />} />
+              <Route path="detail/:id" element={<MovieDetailPage />} />
+              <Route path="ticketroom/:id" element={<BookTicketPage />} />
+              <Route path="register" element={<Register />} />
+              <Route path="login" element={<Login />} />
+            </Route>
 
-          <Route path="profile" element={<Profile />} />
-          <Route path="admin" element={<AdminTemplate />}>
-            <Route index element={<UserManagePage />} />
-            <Route path="dashboard" element={<UserManagePage />} />
-            <Route path="users" element={<UserManagePage />} />
-            <Route path="films" element={<MovieManagePage />} />
-            <Route path="films/addnew" element={<AddMoviePage />} />
-            <Route path="films/edit/:id" element={<EditMoviePage />} />
-            <Route path="films/showtime/:id" element={<ShowtimePage />} />
-          </Route>
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-        <ToastContainer autoClose={1500} />
-      </BrowserRouter>
-    </Provider>
+            <Route path="profile" element={<Profile />} />
+            <Route path="admin" element={<AdminTemplate />}>
+              <Route index element={<UserManagePage />} />
+              <Route path="dashboard" element={<UserManagePage />} />
+              <Route path="users" element={<UserManagePage />} />
+              <Route path="films" element={<MovieManagePage />} />
+              <Route path="films/addnew" element={<AddMoviePage />} />
+              <Route path="films/edit/:id" element={<EditMoviePage />} />
+              <Route path="films/showtime/:id" element={<ShowtimePage />} />
+            </Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+          <ToastContainer autoClose={1500} />
+        </BrowserRouter>
+      </Provider>
     </div>
   );
 };
