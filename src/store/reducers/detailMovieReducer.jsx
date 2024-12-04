@@ -4,7 +4,6 @@ import axios from 'axios';
 // ----- action thunk -----
 export const getDetailMovieAPI = (maPhim) => {
   return async (dispatch) => {
-    dispatch(setLoading(true)); // Bắt đầu loading
     try {
       const result = await axios.get(
         `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${maPhim}`,
@@ -27,7 +26,6 @@ export const getDetailMovieAPI = (maPhim) => {
 const initialState = {
   movieDetail: {},
   error: false,  // Trạng thái lỗi
-  loading: false, // Trạng thái loading
 };
 
 const detailMovieReducer = createSlice({

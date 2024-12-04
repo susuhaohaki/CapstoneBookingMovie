@@ -5,9 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const DetailMovie = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { movieDetail, error, loading } = useSelector(
+  const { movieDetail, error } = useSelector(
     (state) => state.detailMovieReducer,
   );
   const [movieId,setMovieId] = useState("");
@@ -32,14 +31,6 @@ const DetailMovie = () => {
     }
   }, [movieDetail]);
   
-  // Nếu đang loading, hiển thị component loading
-  if (loading) {
-    return (
-      <div className="container mx-auto p-4 flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-      </div>
-    );
-  }
 
   // Nếu có lỗi, hiển thị thông báo lỗi
   if (error) {

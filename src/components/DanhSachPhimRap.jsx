@@ -8,7 +8,7 @@ const DanhSachPhimRap = () => {
   }
   return (
     <div className="flex h-[400px] flex-col gap-4 overflow-y-auto bg-gray-900 p-4 lg:h-[520px] lg:border-r lg:border-gray-300">
-      {danhSachPhim.map((phim, index) => {
+      {danhSachPhim.map((phim) => {
         return (
           <div
             key={phim.maPhim}
