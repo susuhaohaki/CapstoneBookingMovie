@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetProfileQuery } from "../services/authService";
 import { useEffect } from "react";
-import { setCredentials } from "../store/reducers/authReducer";
+import { logout, setCredentials } from "../store/reducers/authReducer";
 const Navbar = () => {
   const { user } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
@@ -72,9 +72,18 @@ const Navbar = () => {
           {isFetching ? (
             <span className="text-lg text-gray-400">Loading...</span>
           ) : user ? (
-            <span className="text-lg text-orange-500">
-              Xin chào, {user?.taiKhoan}
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-lg text-orange-500">
+                Xin chào, {user?.taiKhoan}
+              </span>
+              <button
+                className="text-orange-500 hover:text-orange-600"
+                onClick={()=>dispatch(logout())} 
+                title="Đăng xuất"
+              >
+                <i className="fas fa-sign-out-alt text-xl"></i>
+              </button>
+            </div>
           ) : (
             <>
               <NavLink

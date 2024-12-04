@@ -26,7 +26,7 @@ const registerUser = createAsyncThunk(
       );
     } catch (error) {
       if (error.response && error.response.data) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(error.response.data.content);
       } else {
         return rejectWithValue(error.message);
       }
@@ -78,10 +78,13 @@ const authReducer = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      // state.user = null;
-      // state.token = null;
-      console.log(state);
+      state.user = null;
+      state.token = null;
+      state.isSuccess = false;
+      state.error = null;
+      localStorage.removeItem("accessToken");
     },
+    
     setCredentials: (state, action) => {
       state.user = action.payload.content;
     },
