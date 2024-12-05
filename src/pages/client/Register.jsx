@@ -48,26 +48,6 @@ const Register = () => {
         .min(8, "Họ tên phải có ít nhất 8 ký tự"),
     }),
     onSubmit: async (values) => {
-      // try {
-      //   const res = await axios.post(
-      //     `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyNguoiDung/DangKy`,
-      //     values,
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
-      //       },
-      //     },
-      //   );
-      //   if (res.status === 200) {
-      //     toast.success("Đăng ký thành công!");
-      //     navigate("/login");
-      //   }
-      // } catch (error) {
-      //   console.error("Lỗi đăng ký:", error);
-      //   toast.error(error.response.data.content);
-      // }
-      console.log(values);
       dispatch(registerUser(values));
     },
   });

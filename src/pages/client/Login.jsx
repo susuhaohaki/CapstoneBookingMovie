@@ -23,25 +23,6 @@ const Login = () => {
       matKhau: Yup.string().required("Vui lòng nhập mật khẩu"),
     }),
     onSubmit: async (values) => {
-      // try {
-      //   const response = await axios.post(
-      //     `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyNguoiDung/DangNhap`,
-      //     values, // Đảm bảo dữ liệu truyền đi đúng
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
-      //       },
-      //     },
-      //   );
-      //   toast.success("Đăng nhập thành công!");
-      //   navigate("/");
-      //   const accessToken = response.data.content.accessToken;
-      //   localStorage.setItem("accessToken", accessToken); // Lưu token vào localStorage
-      // } catch (error) {
-      //   console.error("Lỗi đăng nhập:", error);
-      //   toast.error(error.response.data.content);
-      // }
       dispatch(loginUser(values));
     },
   });
