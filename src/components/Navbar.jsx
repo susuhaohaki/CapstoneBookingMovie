@@ -73,15 +73,18 @@ const Navbar = () => {
             <span className="text-lg text-gray-400">Loading...</span>
           ) : user ? (
             <div className="flex items-center gap-3">
-              <span className="text-lg text-orange-500">
+              <NavLink
+                to="/profile"
+                className="text-lg font-semibold text-orange-500 hover:text-orange-300"
+              >
                 Xin chào, {user?.taiKhoan}
-              </span>
+              </NavLink>
               <button
-                className="text-orange-500 hover:text-orange-600"
+                className="text-gray-500 hover:text-orange-600"
                 onClick={() => dispatch(logout())}
                 title="Đăng xuất"
               >
-                <i className="fas fa-sign-out-alt text-xl"></i>
+                <i className="fas fa-sign-out-alt"></i>
               </button>
             </div>
           ) : (
@@ -145,19 +148,41 @@ const Navbar = () => {
           >
             Coming Movie
           </NavLink>
-          <div className="flex flex-col space-y-2 px-4 py-2">
-            <NavLink
-              to="/login"
-              className="rounded bg-orange-500 px-4 py-2 text-center text-white hover:bg-orange-600"
-            >
-              Đăng nhập
-            </NavLink>
-            <NavLink
-              to="/register"
-              className="rounded border border-orange-500 px-4 py-2 text-center text-orange-500 hover:bg-orange-500 hover:text-white"
-            >
-              Đăng ký
-            </NavLink>
+          <div className="flex items-center justify-center gap-3 px-4 py-2">
+            {isFetching ? (
+              <span className="text-lg text-gray-400">Loading...</span>
+            ) : user ? (
+              <div className="flex items-center gap-3">
+                <NavLink
+                  to="/profile"
+                  className="text-lg font-semibold text-orange-500 hover:text-orange-300"
+                >
+                  Xin chào, {user?.taiKhoan}
+                </NavLink>
+                <button
+                  className="text-gray-500 hover:text-orange-600"
+                  onClick={() => dispatch(logout())}
+                  title="Đăng xuất"
+                >
+                  <i className="fas fa-sign-out-alt"></i>
+                </button>
+              </div>
+            ) : (
+              <>
+                <NavLink
+                  to="/register"
+                  className="rounded border border-orange-500 px-4 py-2 text-center text-orange-500 hover:bg-orange-500 hover:text-white"
+                >
+                  Đăng Ký
+                </NavLink>
+                <NavLink
+                  to="/login"
+                  className="rounded bg-orange-500 px-4 py-2 text-center text-white hover:bg-orange-600"
+                >
+                  Đăng Nhập
+                </NavLink>
+              </>
+            )}
           </div>
         </div>
       )}
