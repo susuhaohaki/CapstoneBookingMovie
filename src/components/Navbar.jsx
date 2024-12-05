@@ -72,29 +72,18 @@ const Navbar = () => {
           {isFetching ? (
             <span className="text-lg text-gray-400">Loading...</span>
           ) : user ? (
-<<<<<<< HEAD
-            <>
-              <span className="text-lg text-orange-500">
-                Xin chào, {user?.taiKhoan}
-              </span>
-              <NavLink to="/profile" className="text-lg hover:text-orange-500">
-                Profile
-              </NavLink>
-            </>
-=======
             <div className="flex items-center gap-3">
               <span className="text-lg text-orange-500">
                 Xin chào, {user?.taiKhoan}
               </span>
               <button
                 className="text-orange-500 hover:text-orange-600"
-                onClick={()=>dispatch(logout())} 
+                onClick={() => dispatch(logout())}
                 title="Đăng xuất"
               >
                 <i className="fas fa-sign-out-alt text-xl"></i>
               </button>
             </div>
->>>>>>> 2dfb868ba0c6f3dd69943c57be1c8b09087ac070
           ) : (
             <>
               <NavLink
