@@ -17,6 +17,7 @@ import AdminTemplate from "./templates/AdminTemplate";
 import NotFoundPage from "./pages/client/NotFoundPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SafeRoute from "./components/SafeRoute";
 
 const App = () => {
   return (
@@ -30,9 +31,11 @@ const App = () => {
               <Route path="ticketroom/:id" element={<BookTicketPage />} />
               <Route path="register" element={<Register />} />
               <Route path="login" element={<Login />} />
+              <Route element={<SafeRoute />}>
+                <Route path="profile" element={<Profile />} />
+              </Route>
             </Route>
 
-            <Route path="profile" element={<Profile />} />
             <Route path="admin" element={<AdminTemplate />}>
               <Route index element={<UserManagePage />} />
               <Route path="dashboard" element={<UserManagePage />} />

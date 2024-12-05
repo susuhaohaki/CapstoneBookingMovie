@@ -62,14 +62,10 @@ const loginUser = createAsyncThunk(
   },
 );
 
-const userToken = localStorage.getItem("accessToken")
-  ? localStorage.getItem("accessToken")
-  : null;
-
 const initialState = {
   isLoading: false,
   user: null,
-  token: userToken,
+  token: localStorage.getItem("accessToken") || null,
   error: null,
   isSuccess: false,
 };
@@ -78,9 +74,9 @@ const authReducer = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      // state.user = null;
-      // state.token = null;
-      console.log(state);
+      state.user = null;
+      state.token = null;
+      localStorage.removeItem("accessToken");
     },
     setCredentials: (state, action) => {
       state.user = action.payload.content;

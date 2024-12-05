@@ -13,14 +13,16 @@ const authApi = createApi({
       }
     },
   }),
-  endpoints: (builder) => ({
-    getProfile: builder.query({
-      query: () => ({
-        url: "QuanLyNguoiDung/ThongTinTaiKhoan",
-        method: "POST",
+  endpoints: (builder) => {
+    return {
+      getProfile: builder.query({
+        query: () => ({
+          url: "QuanLyNguoiDung/ThongTinTaiKhoan",
+          method: "POST",
+        }),
       }),
-    }),
-  }),
+    };
+  },
 });
 
 export const { useGetProfileQuery } = authApi;

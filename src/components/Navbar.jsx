@@ -72,9 +72,14 @@ const Navbar = () => {
           {isFetching ? (
             <span className="text-lg text-gray-400">Loading...</span>
           ) : user ? (
-            <span className="text-lg text-orange-500">
-              Xin chào, {user?.taiKhoan}
-            </span>
+            <>
+              <span className="text-lg text-orange-500">
+                Xin chào, {user?.taiKhoan}
+              </span>
+              <NavLink to="/profile" className="text-lg hover:text-orange-500">
+                Profile
+              </NavLink>
+            </>
           ) : (
             <>
               <NavLink
