@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const getHeThongRapAPI = () => {
@@ -10,17 +10,15 @@ export const getHeThongRapAPI = () => {
           headers: {
             TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
           },
-        }
+        },
       );
       dispatch(setHeThongRap(response.data.content));
-
     } catch (error) {
       console.log("🚀 ~ return ~ error:", error);
       dispatch(setRapError(true));
     }
   };
 };
-
 export const getThongTinLichChieuHeThongRapAPI = (maHeThongRap) => {
   return async (dispatch) => {
     try {
@@ -30,15 +28,34 @@ export const getThongTinLichChieuHeThongRapAPI = (maHeThongRap) => {
           headers: {
             TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
           },
-        }
+        },
       );
       dispatch(setThongTinLichChieuHeThongRap(response.data.content));
-
     } catch (error) {
       console.log("🚀 ~ return ~ error:", error);
     }
   };
-}
+};
+
+export const getCumRapAPI = createAsyncThunk(
+  "quanLyRap/getCumRapAPI",
+  async (maHeThongRap) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maHeThongRap}`,
+        {
+          headers: {
+            TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
+          },
+        },
+      );
+      return response.data.content;
+    } catch (error) {
+      console.log("🚀 ~ return ~ error:", error);
+    }
+  },
+);
+
 const initialState = {
   cumRap: [],
   heThongRap: [],
@@ -67,7 +84,18 @@ const quanLyRapReducer = createSlice({
       state.danhSachPhim = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(getCumRapAPI.fulfilled, (state, action) => {
+      state.cumRap = action.payload;
+    });
+  },
 });
 
-export const { setHeThongRap, setRapError,setCumRap,setThongTinLichChieuHeThongRap,setDanhSachPhim } = quanLyRapReducer.actions;
+export const {
+  setHeThongRap,
+  setRapError,
+  setCumRap,
+  setThongTinLichChieuHeThongRap,
+  setDanhSachPhim,
+} = quanLyRapReducer.actions;
 export default quanLyRapReducer.reducer;

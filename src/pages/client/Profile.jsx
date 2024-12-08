@@ -2,9 +2,11 @@
 import { useSelector, useDispatch } from "react-redux";
 import { ConfigProvider, Tabs, List, Empty } from "antd";
 import { useEffect, useState } from "react";
-import { getHeThongRapAPI } from "../../store/reducers/quanLyRapReducer";
+import {
+  getHeThongRapAPI,
+  getCumRapAPI,
+} from "../../store/reducers/quanLyRapReducer";
 import Banner from "../../components/Banner";
-import axios from "axios";
 
 const THEME = {
   tabs: {
@@ -77,9 +79,10 @@ const TheaterInfo = ({ logo, name, address }) => (
   </div>
 );
 
-const BookingPane = ({ user, heThongRap, getCumRapApi }) => {
+const BookingPane = ({ user, heThongRap }) => {
   const bookingHistory = user?.thongTinDatVe || [];
   const [cumRap, setCumRap] = useState({});
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchTheaterData = async () => {
@@ -94,17 +97,20 @@ const BookingPane = ({ user, heThongRap, getCumRapApi }) => {
       ].filter(Boolean);
       // fetch cumRap theo maHeThongRap
       const cumRapData = {};
-      for (const maHeThongRap of maHeThongRaps) {
-        const data = await getCumRapApi(maHeThongRap);
-        if (data) {
-          cumRapData[maHeThongRap] = data;
-        }
-      }
+      await Promise.all(
+        maHeThongRaps.map(async (maHeThongRap) => {
+          const result = await dispatch(getCumRapAPI(maHeThongRap));
+          const data = result.payload;
+          if (data) {
+            cumRapData[maHeThongRap] = data;
+          }
+        }),
+      );
       setCumRap(cumRapData);
     };
 
     fetchTheaterData();
-  }, [user?.thongTinDatVe, getCumRapApi]);
+  }, [user?.thongTinDatVe, dispatch]);
 
   const getTheaterInfo = (seat) => {
     const theater = heThongRap.find(
@@ -229,7 +235,7 @@ const SettingsPane = () => (
   </div>
 );
 
-const tabItems = (user, heThongRap, getCumRapApi) => [
+const tabItems = (user, heThongRap) => [
   {
     label: "Account Information",
     key: "1",
@@ -238,13 +244,7 @@ const tabItems = (user, heThongRap, getCumRapApi) => [
   {
     label: "Booking History",
     key: "2",
-    children: (
-      <BookingPane
-        user={user}
-        heThongRap={heThongRap}
-        getCumRapApi={getCumRapApi}
-      />
-    ),
+    children: <BookingPane user={user} heThongRap={heThongRap} />,
   },
   {
     label: "Settings",
@@ -257,24 +257,6 @@ const Profile = () => {
   const { user } = useSelector((state) => state.authReducer);
   const { heThongRap } = useSelector((state) => state.quanLyRapReducer);
   const dispatch = useDispatch();
-
-  const getCumRapApi = async (maHeThongRap) => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maHeThongRap}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
-          },
-        },
-      );
-      return response.data.content;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     dispatch(getHeThongRapAPI());
   }, [dispatch]);
@@ -288,7 +270,7 @@ const Profile = () => {
             className="mt-6"
             type="card"
             size="large"
-            items={tabItems(user, heThongRap, getCumRapApi)}
+            items={tabItems(user, heThongRap)}
           />
         </ConfigProvider>
       </div>
