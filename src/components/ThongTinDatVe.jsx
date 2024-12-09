@@ -20,8 +20,6 @@ const ThongTinDatVe = () => {
         maGhe: ghe.maGhe,
         giaVe: ghe.giaVe
       }));
-      console.log("🚀 ~ danhSachGhe ~ danhSachGhe:", danhSachGhe)
-
       const result = await axios.post(
         `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyDatVe/DatVe`,
         { 
@@ -40,7 +38,8 @@ const ThongTinDatVe = () => {
       }
     } catch (error) {
       console.log(error)
-      alert(error.response.statusText)
+      alert("Vui lòng đăng nhập")
+      navigate("/login")
     }
   };
   const dispatch = useDispatch();
