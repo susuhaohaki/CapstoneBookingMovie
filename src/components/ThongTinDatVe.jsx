@@ -1,11 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { huyGheBookingTicket } from "../store/reducers/quanLyBookingTicketReducer";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ThongTinDatVe = () => {
   const { thongTinPhim, danhSachGheDangDat } = useSelector(
     (state) => state.quanLyBookingTicketReducer,
   );
+  const navigate = useNavigate();
+  const {token} = useSelector((state) => state.authReducer);
+  useEffect(() => {
+    console.log(danhSachGheDangDat)
+  }, [danhSachGheDangDat]);
+  const handleThanhToan = async() => {
+    try {
+      const danhSachGhe = danhSachGheDangDat.map((ghe) => ({
+        maGhe: ghe.maGhe,
+        giaVe: ghe.giaVe
+      }));
+      console.log("🚀 ~ danhSachGhe ~ danhSachGhe:", danhSachGhe)
+
+      const result = await axios.post(
+        `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyDatVe/DatVe`,
+        { 
+          maLichChieu: thongTinPhim.maLichChieu,
+          danhSachVe: danhSachGhe
+        },{
+          headers: {
+            Authorization: "Bearer " + token,
+            TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
+          },
+        },
+      );
+      if(result.data.statusCode === 200) {
+        alert(result.data.content);
+        window.location.reload()      
+      }
+    } catch (error) {
+      console.log(error)
+      alert(error.response.statusText)
+    }
+  };
   const dispatch = useDispatch();
   return (
     <div className="py-6 text-white">
@@ -91,7 +128,7 @@ const ThongTinDatVe = () => {
                     })}
                 </td>
                 <td className="py-3">
-                  <button className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <button className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={()=>handleThanhToan()}>
                     Thanh toán
                   </button>
                 </td>
