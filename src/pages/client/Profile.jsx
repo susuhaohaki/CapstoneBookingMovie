@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useSelector, useDispatch } from "react-redux";
 import { ConfigProvider, Tabs, List, Empty } from "antd";
 import { useEffect, useState } from "react";
@@ -7,7 +6,7 @@ import {
   getCumRapAPI,
 } from "../../store/reducers/quanLyRapReducer";
 import Banner from "../../components/Banner";
-
+import { useGetProfileQuery } from "../../services/authService";
 const THEME = {
   tabs: {
     components: {
@@ -82,37 +81,63 @@ const TheaterInfo = ({ logo, name, address }) => (
 const BookingPane = ({ user, heThongRap }) => {
   const bookingHistory = user?.thongTinDatVe || [];
   const [cumRap, setCumRap] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    let mounted = true;
+
     const fetchTheaterData = async () => {
-      if (!user?.thongTinDatVe?.length) return;
-      // lay maHeThongRap tu danh sach thong tin dat ve
-      const maHeThongRaps = [
-        ...new Set(
-          user.thongTinDatVe.map(
-            (booking) => booking.danhSachGhe[0]?.maHeThongRap,
+      if (!user?.thongTinDatVe?.length) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const maHeThongRaps = [
+          ...new Set(
+            user.thongTinDatVe.map(
+              (booking) => booking.danhSachGhe[0]?.maHeThongRap,
+            ),
           ),
-        ),
-      ].filter(Boolean);
-      // fetch cumRap theo maHeThongRap
-      const cumRapData = {};
-      await Promise.all(
-        maHeThongRaps.map(async (maHeThongRap) => {
-          const result = await dispatch(getCumRapAPI(maHeThongRap));
-          const data = result.payload;
-          if (data) {
-            cumRapData[maHeThongRap] = data;
-          }
-        }),
-      );
-      setCumRap(cumRapData);
+        ].filter(Boolean);
+
+        const cumRapData = {};
+        await Promise.all(
+          maHeThongRaps.map(async (maHeThongRap) => {
+            const result = await dispatch(getCumRapAPI(maHeThongRap));
+            if (result.payload && mounted) {
+              cumRapData[maHeThongRap] = result.payload;
+            }
+          }),
+        );
+
+        if (mounted) {
+          setCumRap(cumRapData);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching theater data:", error);
+        if (mounted) {
+          setIsLoading(false);
+        }
+      }
     };
 
-    fetchTheaterData();
-  }, [user?.thongTinDatVe, dispatch]);
+    if (heThongRap?.length > 0) {
+      fetchTheaterData();
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, [user?.thongTinDatVe, dispatch, heThongRap]);
 
   const getTheaterInfo = (seat) => {
+    if (!heThongRap?.length || !seat?.maHeThongRap) {
+      return { logo: "", name: "", address: "" };
+    }
+
     const theater = heThongRap.find(
       (rap) => rap.maHeThongRap === seat.maHeThongRap,
     );
@@ -120,10 +145,11 @@ const BookingPane = ({ user, heThongRap }) => {
     const theaterBranch = cumRapList.find((rap) =>
       rap.tenCumRap.includes(seat.tenHeThongRap),
     );
+
     return {
-      logo: theater?.logo,
-      name: theaterBranch?.tenCumRap,
-      address: theaterBranch?.diaChi,
+      logo: theater?.logo || "",
+      name: theaterBranch?.tenCumRap || seat.tenHeThongRap || "",
+      address: theaterBranch?.diaChi || "",
     };
   };
 
@@ -132,6 +158,7 @@ const BookingPane = ({ user, heThongRap }) => {
       <h3 className="mb-6 text-xl font-semibold">Your Bookings</h3>
       <ConfigProvider theme={THEME.pagination}>
         <List
+          loading={isLoading}
           itemLayout="vertical"
           size="large"
           locale={{
@@ -256,10 +283,44 @@ const tabItems = (user, heThongRap) => [
 const Profile = () => {
   const { user } = useSelector((state) => state.authReducer);
   const { heThongRap } = useSelector((state) => state.quanLyRapReducer);
+  const { data: profileData, isLoading: isProfileLoading } =
+    useGetProfileQuery();
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(getHeThongRapAPI());
-  }, [dispatch]);
+    if (!heThongRap?.length) {
+      dispatch(getHeThongRapAPI());
+    }
+  }, [dispatch, heThongRap]);
+
+  if (isProfileLoading) {
+    return (
+      <div className="container mx-auto px-4 py-6 text-white">
+        <div className="flex items-center justify-center">
+          <div className="spinner-border inline-block h-8 w-8 animate-spin rounded-full border-4 border-t-4 border-gray-200"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user && !profileData?.content) {
+    return (
+      <div className="container mx-auto px-4 py-6 text-white">
+        <div className="flex items-center justify-center">
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={
+              <span className="text-gray-400">
+                Please login to view your profile
+              </span>
+            }
+          />
+        </div>
+      </div>
+    );
+  }
+
+  const userData = profileData?.content || user;
 
   return (
     <>
@@ -270,7 +331,7 @@ const Profile = () => {
             className="mt-6"
             type="card"
             size="large"
-            items={tabItems(user, heThongRap)}
+            items={tabItems(userData, heThongRap)}
           />
         </ConfigProvider>
       </div>
