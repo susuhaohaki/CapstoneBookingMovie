@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import ListHeThongRap from "./ListHeThongRap";
 import ListCumRap from "./ListCumRap";
 import { getHeThongRapAPI } from "../store/reducers/quanLyRapReducer";

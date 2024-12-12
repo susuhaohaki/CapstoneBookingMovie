@@ -1,6 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { setHeThongRap } from './quanLyRapReducer';
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 // ----- action thunk -----
 export const getDetailMovieAPI = (maPhim) => {
@@ -18,7 +17,7 @@ export const getDetailMovieAPI = (maPhim) => {
       dispatch(setMovieLoading(false)); // Kết thúc loading khi thành công
     } catch (error) {
       console.log("🚀 ~ return ~ error:", error);
-      dispatch(setMovieError(true)); 
+      dispatch(setMovieError(true));
       dispatch(setMovieLoading(false)); // Kết thúc loading khi có lỗi
     }
   };
@@ -26,7 +25,7 @@ export const getDetailMovieAPI = (maPhim) => {
 
 const initialState = {
   movieDetail: {},
-  error: false,  // Trạng thái lỗi
+  error: false, // Trạng thái lỗi
   heThongRap: {},
 };
 
@@ -36,18 +35,23 @@ const detailMovieReducer = createSlice({
   reducers: {
     setMovieDetail: (state, action) => {
       state.movieDetail = action.payload;
-      state.error = false; 
+      state.error = false;
     },
-    setMovieError: (state, action) => { 
+    setMovieError: (state, action) => {
       state.error = action.payload;
     },
-    setMovieLoading: (state, action) => { 
+    setMovieLoading: (state, action) => {
       state.loading = action.payload;
     },
-    setHeThongRapDetailPhim : (state, action) => {
+    setHeThongRapDetailPhim: (state, action) => {
       state.heThongRap = action.payload;
     },
   },
 });
-export const { setMovieDetail, setMovieError, setMovieLoading,setHeThongRapDetailPhim } = detailMovieReducer.actions;
+export const {
+  setMovieDetail,
+  setMovieError,
+  setMovieLoading,
+  setHeThongRapDetailPhim,
+} = detailMovieReducer.actions;
 export default detailMovieReducer.reducer;

@@ -1,4 +1,3 @@
-import React from "react";
 import { useSelector } from "react-redux";
 
 const DanhSachPhimRap = () => {
@@ -23,14 +22,14 @@ const DanhSachPhimRap = () => {
               <h3 className="text-lg font-bold text-orange-500 lg:text-xl">
                 {phim.tenPhim}
               </h3>
-              <div className="flex flex-wrap gap-2 overflow-y-auto h-[100px] md:h-full">
+              <div className="flex h-[100px] flex-wrap gap-2 overflow-y-auto md:h-full">
                 {phim.lstLichChieuTheoPhim.map((lichChieu, index) => {
                   return (
                     <a
                       href={`/ticketroom/${lichChieu.maLichChieu}`}
                       key={index}
-                      className="inline-block rounded-lg bg-gray-700 px-4 py-2 text-sm font-semibold text-white transition duration-300 ease-in-out hover:bg-orange-500 hover:text-white focus:outline-none  h-[36px]"
-                    >   
+                      className="inline-block h-[36px] rounded-lg bg-gray-700 px-4 py-2 text-sm font-semibold text-white transition duration-300 ease-in-out hover:bg-orange-500 hover:text-white focus:outline-none"
+                    >
                       {new Date(lichChieu.ngayChieuGioChieu).toLocaleTimeString(
                         [],
                         {

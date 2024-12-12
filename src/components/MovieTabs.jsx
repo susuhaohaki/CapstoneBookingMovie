@@ -29,28 +29,27 @@ const MovieTabs = () => {
     setTranslate((prev) => Math.max(prev - 256, maxTranslate));
   };
 
-  const filterFilms = () => {
-    const filteredList = arrayFilm.filter((film) => {
-      if (activeCategory === 0) {
-        return film.hot === true;
-      } else if (activeCategory === 1) {
-        return film.dangChieu === true;
-      } else {
-        return film.sapChieu === true;
-      }
-    });
-    dispatch(setFilteredFilmsAction(filteredList));
-  };
-
   useEffect(() => {
     dispatch(getAllFilmAPI());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
+    const filterFilms = () => {
+      const filteredList = arrayFilm.filter((film) => {
+        if (activeCategory === 0) {
+          return film.hot === true;
+        } else if (activeCategory === 1) {
+          return film.dangChieu === true;
+        } else {
+          return film.sapChieu === true;
+        }
+      });
+      dispatch(setFilteredFilmsAction(filteredList));
+    };
     if (arrayFilm.length > 0) {
       filterFilms();
     }
-  }, [activeCategory, arrayFilm]);
+  }, [activeCategory, arrayFilm, dispatch]);
 
   return (
     <div className="container mx-auto px-4 py-4">

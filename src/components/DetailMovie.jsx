@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   getDetailMovieAPI,
   setHeThongRapDetailPhim,
@@ -34,7 +34,7 @@ const DetailMovie = () => {
       const heThongRap = heThongRapChieu[0];
       dispatch(setHeThongRapDetailPhim(heThongRap));
     }
-  }, [movieDetail]);
+  }, [movieDetail, dispatch]);
 
   useEffect(() => {
     if (movieDetail.trailer) {
@@ -168,7 +168,6 @@ const DetailMovie = () => {
                           <a
                             href={`/ticketroom/${lichChieu.maLichChieu}`}
                             className="mt-2 inline-block h-[36px] w-full rounded-lg bg-gray-700 px-4 py-2 text-sm font-semibold text-white transition duration-300 ease-in-out hover:bg-orange-500 hover:text-white focus:outline-none sm:w-auto"
-                  
                           >
                             {new Date(
                               lichChieu.ngayChieuGioChieu,

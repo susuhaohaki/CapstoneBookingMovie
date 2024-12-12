@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { ConfigProvider, Tabs, List, Empty } from "antd";
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import {
   getHeThongRapAPI,
   getCumRapAPI,
@@ -62,6 +63,15 @@ const AccountInfoPane = ({ user }) => {
   );
 };
 
+AccountInfoPane.propTypes = {
+  user: PropTypes.shape({
+    taiKhoan: PropTypes.string,
+    hoTen: PropTypes.string,
+    email: PropTypes.string,
+    soDT: PropTypes.string,
+  }),
+};
+
 const TheaterInfo = ({ logo, name, address }) => (
   <div className="flex flex-wrap items-center gap-3">
     {logo && (
@@ -72,11 +82,17 @@ const TheaterInfo = ({ logo, name, address }) => (
       />
     )}
     <div>
-      <p className="font-semibold text-white">{name}</p>
+      <p className="font-medium">{name}</p>
       <p className="text-sm text-gray-400">{address}</p>
     </div>
   </div>
 );
+
+TheaterInfo.propTypes = {
+  logo: PropTypes.string,
+  name: PropTypes.string,
+  address: PropTypes.string,
+};
 
 const BookingPane = ({ user, heThongRap }) => {
   const bookingHistory = user?.thongTinDatVe || [];
@@ -253,6 +269,27 @@ const BookingPane = ({ user, heThongRap }) => {
       </ConfigProvider>
     </div>
   );
+};
+
+BookingPane.propTypes = {
+  user: PropTypes.shape({
+    thongTinDatVe: PropTypes.arrayOf(
+      PropTypes.shape({
+        danhSachGhe: PropTypes.arrayOf(
+          PropTypes.shape({
+            maHeThongRap: PropTypes.string,
+            tenHeThongRap: PropTypes.string,
+          }),
+        ),
+      }),
+    ),
+  }),
+  heThongRap: PropTypes.arrayOf(
+    PropTypes.shape({
+      maHeThongRap: PropTypes.string,
+      logo: PropTypes.string,
+    }),
+  ),
 };
 
 const SettingsPane = () => (

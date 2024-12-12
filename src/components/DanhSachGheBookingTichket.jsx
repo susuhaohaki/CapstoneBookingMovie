@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setDanhSachGeDaDat,
@@ -82,10 +82,10 @@ const DanhSachGheBookingTichket = () => {
                     key={index}
                     className={`${
                       ghe.daDat
-                        ? "cursor-not-allowed bg-yellow-400" 
+                        ? "cursor-not-allowed bg-yellow-400"
                         : isGheDangDat
-                          ? "cursor-pointer border border-gray-500 bg-green-400 text-white hover:border-green-700 hover:bg-green-500 hover:text-white" 
-                          : "cursor-pointer border border-gray-500 bg-gray-700 text-white hover:border-green-700 hover:bg-green-500 hover:text-white" 
+                          ? "cursor-pointer border border-gray-500 bg-green-400 text-white hover:border-green-700 hover:bg-green-500 hover:text-white"
+                          : "cursor-pointer border border-gray-500 bg-gray-700 text-white hover:border-green-700 hover:bg-green-500 hover:text-white"
                     } mx-1 my-2 flex h-12 w-12 items-center justify-center rounded-md transition-all duration-300 ease-in-out`}
                     onClick={() =>
                       dispatch(

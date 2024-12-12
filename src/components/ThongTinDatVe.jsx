@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { huyGheBookingTicket } from "../store/reducers/quanLyBookingTicketReducer";
 import axios from "axios";
-import { toast } from "react-toastify";
+
 import { useNavigate } from "react-router-dom";
 
 const ThongTinDatVe = () => {
@@ -10,36 +10,37 @@ const ThongTinDatVe = () => {
     (state) => state.quanLyBookingTicketReducer,
   );
   const navigate = useNavigate();
-  const {token} = useSelector((state) => state.authReducer);
+  const { token } = useSelector((state) => state.authReducer);
   useEffect(() => {
-    console.log(danhSachGheDangDat)
+    console.log(danhSachGheDangDat);
   }, [danhSachGheDangDat]);
-  const handleThanhToan = async() => {
+  const handleThanhToan = async () => {
     try {
       const danhSachGhe = danhSachGheDangDat.map((ghe) => ({
         maGhe: ghe.maGhe,
-        giaVe: ghe.giaVe
+        giaVe: ghe.giaVe,
       }));
       const result = await axios.post(
         `${import.meta.env.VITE_MOVIE_URL}/api/QuanLyDatVe/DatVe`,
-        { 
+        {
           maLichChieu: thongTinPhim.maLichChieu,
-          danhSachVe: danhSachGhe
-        },{
+          danhSachVe: danhSachGhe,
+        },
+        {
           headers: {
             Authorization: "Bearer " + token,
             TokenCybersoft: import.meta.env.VITE_TOKEN_CYBERSOFT,
           },
         },
       );
-      if(result.data.statusCode === 200) {
+      if (result.data.statusCode === 200) {
         alert(result.data.content);
-        window.location.reload()      
+        window.location.reload();
       }
     } catch (error) {
-      console.log(error)
-      alert("Vui lòng đăng nhập")
-      navigate("/login")
+      console.log(error);
+      alert("Vui lòng đăng nhập");
+      navigate("/login");
     }
   };
   const dispatch = useDispatch();
@@ -75,14 +76,18 @@ const ThongTinDatVe = () => {
         </div>
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-lg bg-green-500 shadow-lg"></div>
-          <div className="text-lg font-semibold text-gray-200">Ghế đang đặt</div>
+          <div className="text-lg font-semibold text-gray-200">
+            Ghế đang đặt
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-lg border-2 border-gray-600 bg-gray-700 shadow-lg"></div>
-          <div className="text-lg font-semibold text-gray-200">Ghế chưa đặt</div>
+          <div className="text-lg font-semibold text-gray-200">
+            Ghế chưa đặt
+          </div>
         </div>
       </div>
-      <div className="mt-5 max-h-[400px] overflow-y-auto rounded-lg border border-gray-300 text-center shadow-lg bg-gray-800">
+      <div className="mt-5 max-h-[400px] overflow-y-auto rounded-lg border border-gray-300 bg-gray-800 text-center shadow-lg">
         <table className="w-full table-auto border-collapse text-center text-gray-300">
           <thead>
             <tr className="bg-gray-700 text-xl font-bold text-gray-200">
@@ -127,7 +132,10 @@ const ThongTinDatVe = () => {
                     })}
                 </td>
                 <td className="py-3">
-                  <button className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={()=>handleThanhToan()}>
+                  <button
+                    className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onClick={() => handleThanhToan()}
+                  >
                     Thanh toán
                   </button>
                 </td>
